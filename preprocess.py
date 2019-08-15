@@ -1,7 +1,7 @@
 import numpy as np  # linear algebra
 import pandas as pd  # data processing, CSV file I/O (e.g. pd.read_csv)
 from pathlib import Path
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 from tqdm import tqdm_notebook
 import IPython
 import IPython.display
@@ -16,10 +16,10 @@ import os
 
 print(os.listdir("../input"))
 
-DATA = Path('../input/freesound-audio-tagging-2019')
-# PREPROCESSED = Path('../input/fat2019_prep_mels1')
-PREPROCESSED = Path('work/fat2019_prep_mels1')
-WORK = Path('work')
+DATA = Path('/home/pel/yxy/kaggle_work/FAST2019/FAST_DATA')
+PREPROCESSED = Path('/home/pel/yxy/kaggle_work/FAST2019/fat2019_prep_mels1')
+WORK = Path('/home/pel/yxy/kaggle_work')
+
 Path(PREPROCESSED).mkdir(exist_ok=True, parents=True)
 Path(WORK).mkdir(exist_ok=True, parents=True)
 
@@ -81,13 +81,13 @@ def audio_to_melspectrogram(conf, audio):
     return spectrogram
 
 
-def show_melspectrogram(conf, mels, title='Log-frequency power spectrogram'):
-    librosa.display.specshow(mels, x_axis='time', y_axis='mel',
-                             sr=conf.sampling_rate, hop_length=conf.hop_length,
-                             fmin=conf.fmin, fmax=conf.fmax)
-    plt.colorbar(format='%+2.0f dB')
-    plt.title(title)
-    plt.show()
+# def show_melspectrogram(conf, mels, title='Log-frequency power spectrogram'):
+#    librosa.display.specshow(mels, x_axis='time', y_axis='mel',
+#                             sr=conf.sampling_rate, hop_length=conf.hop_length,
+#                             fmin=conf.fmin, fmax=conf.fmax)
+#    plt.colorbar(format='%+2.0f dB')
+#    plt.title(title)
+#    plt.show()
 
 
 def read_as_melspectrogram(conf, pathname, trim_long_data, debug_display=False):
@@ -95,7 +95,7 @@ def read_as_melspectrogram(conf, pathname, trim_long_data, debug_display=False):
     mels = audio_to_melspectrogram(conf, x)
     if debug_display:
         IPython.display.display(IPython.display.Audio(x, rate=conf.sampling_rate))
-        show_melspectrogram(conf, mels)
+        # show_melspectrogram(conf, mels)
     return mels
 
 
