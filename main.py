@@ -118,8 +118,8 @@ def calculate_per_class_lwlrap(truth, scores):
     return per_class_lwlrap, weight_per_class
 
 
-dataset_dir = Path('../input/freesound-audio-tagging-2019')
-preprocessed_dir = Path('../input/fat2019_prep_mels1')
+dataset_dir = Path('/home/pel/yxy/kaggle_work/FAST2019/FAST_DATA')
+preprocessed_dir = Path('/home/pel/yxy/kaggle_work/FAST2019/fat2019_prep_mels1')
 
 csvs = {
     'train_curated': dataset_dir / 'train_curated.csv',
@@ -301,7 +301,7 @@ Classifier(num_classes=num_classes)
 def train_model(x_train, y_train, train_transforms):
     num_epochs = 80
     batch_size = 64
-    test_batch_size = 256
+    test_batch_size = 128 
     lr = 3e-3
     eta_min = 1e-5
     t_max = 10
@@ -380,7 +380,7 @@ print(result)
 
 
 def predict_model(test_fnames, x_test, test_transforms, num_classes, *, tta=5):
-    batch_size = 256
+    batch_size = 128
 
     test_dataset = FATTestDataset(test_fnames, x_test, test_transforms, tta=tta)
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)

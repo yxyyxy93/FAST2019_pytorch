@@ -14,7 +14,8 @@ import torch
 
 import os
 
-print(os.listdir("../input"))
+# GPU
+os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
 
 DATA = Path('/home/pel/yxy/kaggle_work/FAST2019/FAST_DATA')
 PREPROCESSED = Path('/home/pel/yxy/kaggle_work/FAST2019/fat2019_prep_mels1')
@@ -101,7 +102,7 @@ def read_as_melspectrogram(conf, pathname, trim_long_data, debug_display=False):
 
 class conf:
     sampling_rate = 44100
-    duration = 2  # sec
+    duration = 4  # sec
     hop_length = 347 * duration  # to make time steps 128
     fmin = 20
     fmax = sampling_rate // 2
@@ -191,6 +192,7 @@ def convert_dataset(df, source_folder, filename):
 
 convert_dataset(trn_curated_df, TRN_CURATED, MELS_TRN_CURATED)
 convert_dataset(test_df, TEST, MELS_TEST)
+
 df = trn_noisy_df.copy()
 df['singled'] = ~df.labels.str.contains(',')
 singles_df = df[df.singled]
@@ -205,8 +207,10 @@ best50s_df = singles_df.loc[idxes_best50s]
 
 best50s_df.to_csv(CSV_TRN_NOISY_BEST50S, index=False)
 # Convert noisy set first
+print("convert noisy set")
 X_trn_noisy = convert_dataset(trn_noisy_df, TRN_NOISY, MELS_TRN_NOISY)
 
 # Then choose preprocessed data for 50s, and save it
+print("choose preprocessed data for 50s and save it")
 X = [X_trn_noisy[i] for i in idxes_best50s]
 save_as_pkl_binary(X, MELS_TRN_NOISY_BEST50S)
