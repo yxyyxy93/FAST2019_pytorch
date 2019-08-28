@@ -14,8 +14,8 @@ import torch
 
 import os
 
-# GPU
-os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
+starttime = time.time()
+
 
 DATA = Path('/home/pel/yxy/kaggle_work/FAST2019/FAST_DATA')
 PREPROCESSED = Path('/home/pel/yxy/kaggle_work/FAST2019/fat2019_prep_mels1')
@@ -160,9 +160,11 @@ def mono_to_color(X, mean=None, std=None, norm_max=None, norm_min=None, eps=1e-6
 def convert_wav_to_image(df, source):
     X = []
     for i, row in tqdm_notebook(df.iterrows()):
+         if (i+1)%100==0: print("{}/{}, sec: {:.1f}".format(i+1, len(df), time.time()-starttime))
         x = read_as_melspectrogram(conf, source / str(row.fname), trim_long_data=False)
         x_color = mono_to_color(x)
         X.append(x_color)
+
     return X
 
 
